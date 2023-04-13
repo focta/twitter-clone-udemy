@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./Timeline.css";
 import TweetBox from "./TweetBox";
 import Post from "./Post";
@@ -10,10 +10,16 @@ function Timeline() {
 
   // FireStoreの取得部分
   const postData = collection(db, "posts");
-  getDocs(postData).then((querySnapshot) => {
-    console.log();
-    setPosts(querySnapshot.docs.map((doc) => doc.data()));
-  });
+
+  //  レンダリング時に一回だけ処理を行うための実装
+  useEffect(() => {
+    getDocs(postData).then((querySnapshot) => {
+      console.log();
+      setPosts(querySnapshot.docs.map((doc) => doc.data()));
+    });
+    // 下記のコンソールは実際は strictModeを利用しているので２回出力してしまうが、レンダリングの度に呼び出される現象は防げている
+    console.log("本当に１度きりしかよばれない・・・？");
+  }, []);
 
   return (
     <div className="timeline">
@@ -26,6 +32,7 @@ function Timeline() {
 
       {posts.map((post) => (
         <Post
+          key={post.text}
           displayName={post.displayName}
           userName={post.useName}
           verified={post.verified}
