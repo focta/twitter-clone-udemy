@@ -3,18 +3,18 @@ import "./Timeline.css";
 import TweetBox from "./TweetBox";
 import Post from "./Post";
 import db from "../../firebase";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, orderBy, query } from "firebase/firestore";
 
 function Timeline() {
   const [posts, setPosts] = useState([]);
 
-  // FireStoreの取得部分
-  const postData = collection(db, "posts");
-
   //  レンダリング時に一回だけ処理を行うための実装
   useEffect(() => {
-    getDocs(postData).then((querySnapshot) => {
-      console.log();
+    // FireStoreの取得部分
+    const postData = collection(db, "posts");
+    const q = query(postData, orderBy("timestamp", "desc"));
+    getDocs(q).then((querySnapshot) => {
+      // 取得データを最新順に並べるための実装
       setPosts(querySnapshot.docs.map((doc) => doc.data()));
     });
     // 下記のコンソールは実際は strictModeを利用しているので２回出力してしまうが、レンダリングの度に呼び出される現象は防げている

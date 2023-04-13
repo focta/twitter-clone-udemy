@@ -1,7 +1,7 @@
 import { Avatar, Button } from "@mui/material";
 import React, { useState } from "react";
 import "./TweetBox.css";
-import { collection, addDoc } from "firebase/firestore";
+import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import db from "../../firebase";
 
 function TweetBox() {
@@ -19,6 +19,7 @@ function TweetBox() {
       text: tweetMessage,
       avator: "http://shincode.info/wp-content/uploads/2021/12/icon.png",
       image: "https://source.unsplash.com/random",
+      timestamp: serverTimestamp(),
     });
 
     setTweetMessage("");
