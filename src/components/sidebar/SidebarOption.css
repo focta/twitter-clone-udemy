@@ -22,3 +22,9 @@
     margin-right: 20px;
     font-weight: 800;
 }
+
+
+.sidebarOption_active {
+    background-color: var(--twitter-background);
+    border-radius: 30px;
+}
